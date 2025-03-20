@@ -28,10 +28,10 @@ function checkProbabilityTheory(count) {
         }
     }
 
-    console.log( even/count *100 , odd/count *100)
+    console.log( "Відсоток парних чисел: " + even/count *100+ " та відсоток непарних: " + odd/count *100)
  }
 
- checkProbabilityTheory(5)
+ checkProbabilityTheory(10)
 
 
  
