@@ -14,6 +14,7 @@
 					"script": {
 						"exec": [
 							"",
+							"",
 							"const email = pm.collectionVariables.replaceIn('{{$randomEmail}}');",
 							"const name = pm.variables.replaceIn('{{$randomFirstName}}');",
 							"const lastName = pm.variables.replaceIn('{{$randomLastName}}');",
@@ -91,6 +92,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"",
 							"email: pm.collectionVariables.get('email')",
 							"password: pm.collectionVariables.get('password')",
 							"",
@@ -416,6 +418,34 @@
 			"response": []
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const baseURL = [",
+					"    \"https://qauto2.forstudy.space/api\",",
+					"    \"https://qauto.forstudy.space/api\"",
+					"];",
+					"",
+					"// Рандомний вибір URL",
+					"pm.environment.set(\"baseURL\", baseURL[Math.floor(Math.random() * baseURL.length)]);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "email",
@@ -447,8 +477,9 @@
 		},
 		{
 			"key": "baseURL",
-			"value": "baseURL",
-			"type": "default"
+			"value": "",
+			"type": "string",
+			"disabled": true
 		}
 	]
 }
