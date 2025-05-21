@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "ff865bc0-bae6-40b1-a8a6-b3b7fb3a642f",
+		"name": "HOMEWORK Jenkins",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35231537"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const testData = JSON.parse(pm.variables.get(\"MOCK_DATA\"));",
+							"let currentTestIndex = parseInt(pm.variables.get(\"currentTestIndex\"), 10);",
+							"let currentTest = testData[currentTestIndex];",
+							"",
+							"pm.test(`Status should be ${currentTest.expectedResult.status}`, () => {",
+							"    pm.response.to.have.status(currentTest.expectedResult.status);",
+							"});",
+							"",
+							"pm.test(`Error message should match`, () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.message).to.eql(currentTest.expectedResult.message);",
+							"});",
+							"",
+							"// Перехід до наступного тесту",
+							"if (currentTestIndex < testData.length - 1) {",
+							"    pm.variables.set(\"currentTestIndex\", currentTestIndex + 1);",
+							"    postman.setNextRequest(pm.info.requestName); // Повторити цей самий запит",
+							"} else {",
+							"    pm.variables.unset(\"currentTestIndex\");",
+							"    postman.setNextRequest(null); // Завершити ланцюг",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const data = [",
+							"    {",
+							"        testName: \"empty email\",",
+							"        testData: { email: \"\" },",
+							"        expectedResult: {",
+							"            message: \"Empty email is not alowed\",",
+							"            status: 400",
+							"        }",
+							"    },",
+							"    {",
+							"        testName: \"empty password\",",
+							"        testData: { password: \"\" },",
+							"        expectedResult: {",
+							"            message: \"Empty password is not alowed\",",
+							"            status: 400",
+							"        }",
+							"    },",
+							"    {",
+							"        testName: \"empty name\",",
+							"        testData: { name: \"\" },",
+							"        expectedResult: {",
+							"            message: \"Empty name is not alowed\",",
+							"            status: 400",
+							"        }",
+							"    },",
+							"    {",
+							"        testName: \"Wrong length name\",",
+							"        testData: { name: \"a\" },",
+							"        expectedResult: {",
+							"            message: \"Name has to be from 2 to 20 characters long\",",
+							"            status: 400",
+							"        }",
+							"    }",
+							"];",
+							"",
+							"pm.variables.set(\"MOCK_DATA\", JSON.stringify(data));",
+							"",
+							"let index = parseInt(pm.variables.get(\"currentTestIndex\") || \"0\", 10);",
+							"let test = data[index];",
+							"",
+							"// Базовий body",
+							"let baseBody = {",
+							"    name: test.testData.name || \"TestName\",",
+							"    lastName: test.testData.lastName || \"TestLastName\",",
+							"    email: test.testData.email || `user${index}@test.com`,",
+							"    password: test.testData.password || \"Test12345\",",
+							"    repeatPassword: test.testData.password || \"Test12345\"",
+							"};",
+							"",
+							"// Зберігаємо body для підстановки в запит",
+							"pm.variables.set(\"requestBody\", JSON.stringify(baseBody));",
+							"pm.variables.set(\"currentTestIndex\", index);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"protocolVersion": "http2"
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestBody}}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/signup",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
