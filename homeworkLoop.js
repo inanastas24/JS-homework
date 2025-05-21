@@ -25,4 +25,4 @@ function pow(x, y) {
     console.log(result); // Повертаємо результат
   }
 
- pow(2, 4);
+ pow(2, 7);
