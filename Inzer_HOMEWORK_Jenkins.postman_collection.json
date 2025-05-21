@@ -444,6 +444,11 @@
 		{
 			"key": "country",
 			"value": ""
+		},
+		{
+			"key": "baseURL",
+			"value": "baseURL",
+			"type": "default"
 		}
 	]
 }
